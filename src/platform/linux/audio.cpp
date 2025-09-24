@@ -349,30 +349,32 @@ namespace platf {
         auto sink_name = get_default_sink_name();
         sink.host = sink_name;
 
-        if (index.stereo == PA_INVALID_INDEX) {
-          index.stereo = load_null(stereo, speaker::map_stereo, sizeof(speaker::map_stereo));
+        if (!config::audio.no_virtual_sinks) {
           if (index.stereo == PA_INVALID_INDEX) {
-            BOOST_LOG(warning) << "Couldn't create virtual sink for stereo: "sv << pa_strerror(pa_context_errno(ctx.get()));
-          } else {
-            ++nullcount;
+            index.stereo = load_null(stereo, speaker::map_stereo, sizeof(speaker::map_stereo));
+            if (index.stereo == PA_INVALID_INDEX) {
+              BOOST_LOG(warning) << "Couldn't create virtual sink for stereo: "sv << pa_strerror(pa_context_errno(ctx.get()));
+            } else {
+              ++nullcount;
+            }
           }
-        }
 
-        if (index.surround51 == PA_INVALID_INDEX) {
-          index.surround51 = load_null(surround51, speaker::map_surround51, sizeof(speaker::map_surround51));
           if (index.surround51 == PA_INVALID_INDEX) {
-            BOOST_LOG(warning) << "Couldn't create virtual sink for surround-51: "sv << pa_strerror(pa_context_errno(ctx.get()));
-          } else {
-            ++nullcount;
+            index.surround51 = load_null(surround51, speaker::map_surround51, sizeof(speaker::map_surround51));
+            if (index.surround51 == PA_INVALID_INDEX) {
+              BOOST_LOG(warning) << "Couldn't create virtual sink for surround-51: "sv << pa_strerror(pa_context_errno(ctx.get()));
+            } else {
+              ++nullcount;
+            }
           }
-        }
 
-        if (index.surround71 == PA_INVALID_INDEX) {
-          index.surround71 = load_null(surround71, speaker::map_surround71, sizeof(speaker::map_surround71));
           if (index.surround71 == PA_INVALID_INDEX) {
-            BOOST_LOG(warning) << "Couldn't create virtual sink for surround-71: "sv << pa_strerror(pa_context_errno(ctx.get()));
-          } else {
-            ++nullcount;
+            index.surround71 = load_null(surround71, speaker::map_surround71, sizeof(speaker::map_surround71));
+            if (index.surround71 == PA_INVALID_INDEX) {
+              BOOST_LOG(warning) << "Couldn't create virtual sink for surround-71: "sv << pa_strerror(pa_context_errno(ctx.get()));
+            } else {
+              ++nullcount;
+            }
           }
         }
 
